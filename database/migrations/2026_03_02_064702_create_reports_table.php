@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
             $table->string('number');
-            $table->text('description');
+            $table->string('description');
             $table->timestamps();
             $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete()->nullOnDelete();
             $table->foreignId('status_id')->nullable()->constrained()->cascadeOnDelete()->nullOnDelete();
