@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Список заявлений</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
 <body class="bg-bg dark:bg-gray-900">
 
     <header>
@@ -20,9 +22,23 @@
     </header>
 
     <main>
+        {{$reports->links()}}
+        <div>
+            <span>Сортировка по дате создания:</span>
+            <a href="{{route('reports.index', ['sort'=> 'desc'])}}">Новые</a>
+            <a href="{{route('reports.index', ['sort'=>'asc'])}}">Старые</a>
+        </div>
+        <p>Филтрация по статусу</p>
+        <ul>
+            @foreach ($statuses as $status)
+                <li>
+                    <a href="{{route('reports.index', ['status'=>$status->id])}}">{{$status->name}}</a>
+                </li>
+            @endforeach
+        </ul>
         <div class="mx-auto px-4 p-4">
             <a href="{{ route('reports.create') }}"
-               class="bg-primary hover:bg-primary/90 dark:bg-primary/80 dark:hover:bg-primary/60 text-white px-6 py-3 rounded-md inline-block w-full sm:w-auto text-center">
+                class="bg-primary hover:bg-primary/90 dark:bg-primary/80 dark:hover:bg-primary/60 text-white px-6 py-3 rounded-md inline-block w-full sm:w-auto text-center">
                 Создать заявление
             </a>
         </div>
@@ -41,24 +57,29 @@
                 <p class="mb-3 text-text dark:text-gray-300 text-sm">
                     {{ $report->description }}
                 </p>
-
+                <p class="mb-3 text-text dark:text-gray-300 text-sm">
+                    {{ $report->status->name }}
+                </p>
                 <div class="flex flex-col sm:flex-row gap-2 mt-4">
                     <form action="{{route('reports.destroy', $report->id)}}" method="post" class="w-full sm:w-1/2">
                         @method('delete') @csrf
                         <input type="submit" value="Удалить"
-                               class="w-full bg-danger hover:bg-danger/80 dark:bg-danger/80 dark:hover:bg-danger/60 text-white px-4 py-2 rounded cursor-pointer text-sm">
+                            class="w-full bg-danger hover:bg-danger/80 dark:bg-danger/80 dark:hover:bg-danger/60 text-white px-4 py-2 rounded cursor-pointer text-sm">
                     </form>
 
                     <form action="{{ route('reports.edit', ['report' => $report]) }}" method="get" class="w-full sm:w-1/2">
                         @csrf
                         <input type="submit" value="Редактировать"
-                               class="w-full bg-secondary hover:bg-secondary/80 dark:bg-secondary/80 dark:hover:bg-secondary/60 text-white px-4 py-2 rounded cursor-pointer text-sm">
+                            class="w-full bg-secondary hover:bg-secondary/80 dark:bg-secondary/80 dark:hover:bg-secondary/60 text-white px-4 py-2 rounded cursor-pointer text-sm">
                     </form>
                 </div>
             </div>
             @endforeach
+            
         </div>
+        
     </main>
 
 </body>
+
 </html>

@@ -3,14 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Report;
+use App\Models\Status;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $reports = Report::all();
-        return view('report.index', compact('reports'));
+       $sort = $request->input('sort');
+       if ($sort == 'asc' || $sort=='desc')
+       {
+        $reports = Report::orderBy('created_at', $sort)->paginate(4);
+       }
+       else
+       {
+        $reports = Report::paginate(6);
+       }
+       $statuses = Status::all();
+       return view('report.index', compact('reports', 'statuses'));
     }
 
     public function destroy(Report $report)
