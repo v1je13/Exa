@@ -22,17 +22,17 @@
     </header>
 
     <main>
-        {{$reports->links()}}
+        {{$reports->appends(request()->query())->links()}}
         <div>
             <span>Сортировка по дате создания:</span>
-            <a href="{{route('reports.index', ['sort'=> 'desc'])}}">Новые</a>
-            <a href="{{route('reports.index', ['sort'=>'asc'])}}">Старые</a>
+            <a href="{{route('reports.index', ['sort'=> 'desc', 'status'=>$status])}}">Новые</a>
+            <a href="{{route('reports.index', ['sort'=>'asc', 'status'=>$status])}}">Старые</a>
         </div>
         <p>Филтрация по статусу</p>
         <ul>
             @foreach ($statuses as $status)
                 <li>
-                    <a href="{{route('reports.index', ['status'=>$status->id])}}">{{$status->name}}</a>
+                    <a href="{{route('reports.index', ['sort'=>$sort,'status'=>$status->id])}}">{{$status->name}}</a>
                 </li>
             @endforeach
         </ul>
@@ -58,7 +58,7 @@
                     {{ $report->description }}
                 </p>
                 <p class="mb-3 text-text dark:text-gray-300 text-sm">
-                    {{ $report->status->name }}
+                    {{ $report->status->name}}
                 </p>
                 <div class="flex flex-col sm:flex-row gap-2 mt-4">
                     <form action="{{route('reports.destroy', $report->id)}}" method="post" class="w-full sm:w-1/2">
