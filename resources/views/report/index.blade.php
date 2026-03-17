@@ -22,7 +22,9 @@
     </header>
 
     <main>
-        {{$reports->appends(request()->query())->links()}}
+        
+        <x-app-layout>
+            {{$reports->appends(request()->query())->links()}}
         <div>
             <span>Сортировка по дате создания:</span>
             <a href="{{route('reports.index', ['sort'=> 'desc', 'status'=>$status])}}">Новые</a>
@@ -75,7 +77,7 @@
                 </div>
             </div>
             @endforeach
-            
+            </x-app-layout>
         </div>
         
     </main>

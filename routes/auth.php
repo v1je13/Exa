@@ -1,5 +1,6 @@
 <?php
-
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -56,4 +57,28 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
+        
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+
+Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+
+Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+
+Route::get('/reports/create', function()
+{
+    return view('report.create');
+} )->name('reports.create');
+
+Route::delete('/reports/{report}', [ReportController::class, 'destroy'])
+->name('reports.destroy');
+
+Route::post('/reports',[ReportController::class,'store'])->name('reports.store');
+
+Route::get('/reports/{report}/edit', [ReportController::class, 'edit'])->name('reports.edit');
+
+Route::put('/reports/{report}', [ReportController::class, 'update'])->name('reports.update');
+
 });
