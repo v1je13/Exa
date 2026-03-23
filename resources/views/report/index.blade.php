@@ -24,7 +24,7 @@
     <main>
         
         <x-app-layout>
-            {{$reports->appends(request()->query())->links()}}
+           
         <div>
             <span>Сортировка по дате создания:</span>
             <a href="{{route('reports.index', ['sort'=> 'desc', 'status'=>$status])}}">Новые</a>
@@ -69,14 +69,14 @@
                             class="w-full bg-danger hover:bg-danger/80 dark:bg-danger/80 dark:hover:bg-danger/60 text-white px-4 py-2 rounded cursor-pointer text-sm">
                     </form>
 
-                    <form action="{{ route('reports.edit', ['report' => $report]) }}" method="get" class="w-full sm:w-1/2">
-                        @csrf
-                        <input type="submit" value="Редактировать"
-                            class="w-full bg-secondary hover:bg-secondary/80 dark:bg-secondary/80 dark:hover:bg-secondary/60 text-white px-4 py-2 rounded cursor-pointer text-sm">
-                    </form>
+                    <a href="{{ route('reports.edit', ['report' => $report]) }}" 
+   class="inline-block text-center w-full sm:w-1/2 bg-secondary hover:bg-secondary/80 dark:bg-secondary/80 dark:hover:bg-secondary/60 text-white px-4 py-2 rounded text-sm">
+    Редактировать
+</a>
                 </div>
             </div>
             @endforeach
+             {{$reports->appends(request()->query())->links()}}
             </x-app-layout>
         </div>
         
