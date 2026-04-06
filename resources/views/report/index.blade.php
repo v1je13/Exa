@@ -25,19 +25,7 @@
         
         <x-app-layout>
            
-        <div>
-            <span>Сортировка по дате создания:</span>
-            <a href="{{route('reports.index', ['sort'=> 'desc', 'status'=>$status])}}">Новые</a>
-            <a href="{{route('reports.index', ['sort'=>'asc', 'status'=>$status])}}">Старые</a>
-        </div>
-        <p>Филтрация по статусу</p>
-        <ul>
-            @foreach ($statuses as $status)
-                <li>
-                    <a href="{{route('reports.index', ['sort'=>$sort,'status'=>$status->id])}}">{{$status->name}}</a>
-                </li>
-            @endforeach
-        </ul>
+   <x-filter :sort=$sort :status=$status></x-filter>
         <div class="mx-auto px-4 p-4">
             <a href="{{ route('reports.create') }}"
                 class="bg-primary hover:bg-primary/90 dark:bg-primary/80 dark:hover:bg-primary/60 text-white px-6 py-3 rounded-md inline-block w-full sm:w-auto text-center">
@@ -59,9 +47,9 @@
                 <p class="mb-3 text-text dark:text-gray-300 text-sm">
                     {{ $report->description }}
                 </p>
-                <p class="mb-3 text-text dark:text-gray-300 text-sm">
+                <x-status :type="$report->status_id">
                     {{ $report->status->name}}
-                </p>
+                </x-status>
                 <div class="flex flex-col sm:flex-row gap-2 mt-4">
                     <form action="{{route('reports.destroy', $report->id)}}" method="post" class="w-full sm:w-1/2">
                         @method('delete') @csrf

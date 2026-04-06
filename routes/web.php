@@ -28,3 +28,10 @@ Route::middleware((Admin::class))->group(function(){
                     ->name('reports.status.update');
 });
 require __DIR__.'/auth.php';
+
+Route::get('/index', function(){
+return view('index');
+});
+Route::get('/second', function(){
+return view('second');
+});
