@@ -48,6 +48,9 @@
                     <p class="mb-3 text-text dark:text-gray-300 text-sm">
                         {{ $report->description }}
                     </p>
+                    @isset($report->path_img)
+                        <img src="{{Storage::url($report->path_img)}}" class="contact-block__img" alt="#">
+                    @endisset
                     <x-status :type="$report->status_id">
                         {{ $report->status->name}}
                     </x-status>
