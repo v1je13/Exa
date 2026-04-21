@@ -1,15 +1,11 @@
-import './bootstrap';
-
-import Alpine from 'alpinejs';
+import "./bootstrap";
+import "flowbite";
+import Alpine from "alpinejs";
+import mask from "@alpinejs/mask";
 
 window.Alpine = Alpine;
 
+Alpine.plugin(mask);
 Alpine.start();
 
-const selectedElements = document.querySelectorAll('.status-form #status_id');
-console.log(selectedElements)
-for (let elem of selectedElements){
-    elem.addEventListener('change', function () {
-        this.form.submit();
-    });
-}
+import.meta.glob(["../images/**"]);

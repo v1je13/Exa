@@ -10,9 +10,8 @@ class AdminController extends Controller
 {
     public function index()
 {
-    // Получаем все заявки и все статусы из базы данных
-    $reports = Report::all();
-    $statuses = Status::all();
+    $reports = Report::query()->with(['user', 'status'])->get();
+    $statuses = Status::query()->select(['id', 'name'])->get();
 
     // Передаем переменные в представление 'admin.index'
     return view('admin.index', compact('reports', 'statuses'));

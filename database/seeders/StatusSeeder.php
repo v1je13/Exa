@@ -21,7 +21,7 @@ class StatusSeeder extends Seeder
                 ],
 
                 [
-                    'name' => "отклоенено"
+                    'name' => "отклонено"
                 ]
             ]
             );

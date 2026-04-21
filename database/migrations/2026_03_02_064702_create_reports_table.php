@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('number');
             $table->string('description');
-            $table->timestamps();
             $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete()->nullOnDelete();
             $table->foreignId('status_id')->nullable()->constrained()->cascadeOnDelete()->nullOnDelete();
-            $table->date(column: 'deleted_at');
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 

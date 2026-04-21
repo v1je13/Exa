@@ -20,7 +20,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        return view("auth.register");
     }
 
     /**
@@ -31,29 +31,41 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'middlename' => ['required', 'string', 'max:255'],
-            'lastname' => ['required', 'string', 'max:255'],
-            'tel' => ['required', 'string', 'max:255'],
-            'login' => ['required', 'string', 'max:255', 'unique:'.User::class],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            "name" => ["required", "string", "max:255"],
+            "middlename" => ["required", "string", "max:255"],
+            "lastname" => ["required", "string", "max:255"],
+            "tel" => ["required", "string", "max:255"],
+            "login" => [
+                "required",
+                "string",
+                "max:255",
+                "unique:" . User::class,
+            ],
+            "email" => [
+                "required",
+                "string",
+                "lowercase",
+                "email",
+                "max:255",
+                "unique:" . User::class,
+            ],
+            "password" => ["required", "confirmed", Rules\Password::defaults()],
         ]);
 
         $user = User::create([
-            'name' => $request->name,
-            'middlename' => $request->middlename,
-            'lastname' => $request->lastname,
-            'tel' => $request->tel,
-            'login'=> $request->login,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            "name" => $request->name,
+            "middlename" => $request->middlename,
+            "lastname" => $request->lastname,
+            "tel" => $request->tel,
+            "login" => $request->login,
+            "email" => $request->email,
+            "password" => Hash::make($request->password),
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect()->route("reports.index");
     }
 }
