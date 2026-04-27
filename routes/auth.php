@@ -26,6 +26,7 @@ Route::get('/reports/create', function()
 {
     return view('report.create');
 } )->name('reports.create');
+Route::get('/reports/download/{report}', [ReportController::class, 'download'])->name('reports.download');
 
 Route::delete('/reports/{report}', [ReportController::class, 'destroy'])
 ->name('reports.destroy');

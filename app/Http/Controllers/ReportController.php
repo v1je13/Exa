@@ -7,9 +7,12 @@ use App\Models\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Laravel\Facades\Image;
+use Intervention\Image\Encoders\WebpEncoder;
 
 class ReportController extends Controller
 {
+
     public function index(Request $request)
     {
         $sort = $request->string("sort")->toString();
@@ -61,16 +64,21 @@ class ReportController extends Controller
         $data["user_id"] = Auth::user()->id;
         $data["status_id"] = 1;
 
-    $imageName = Storage::disk('public')->put('reports', $request->file('path_img'));
+        $imageFile = $request->file('path_img');
+        $img = Image::read($imageFile);
+        $img->scaleDown(600);
+        $encoder = $img->encode(new WebpEncoder(100));
+        $imagePath = 'reports/' . time() . '.webp';
+        Storage::disk('public')->put($imagePath, $encoder->toString());
         Report::create([
             'number' => $request->number,
-            'description'=>$request->description,
-            'status_id'=>1,
-            'path_img'=>$imageName,
-            'user_id'=>Auth::user()->id,
+            'description' => $request->description,
+            'status_id' => 1,
+            'path_img' => $imagePath,
+            'user_id' => Auth::user()->id,
         ]);
-        
-       return redirect()->route('reports.index')->with("success", "Заявление отправлено.");
+
+        return redirect()->route('reports.index')->with("success", "Заявление отправлено.");
     }
 
     public function edit(Report $report)
@@ -105,5 +113,20 @@ class ReportController extends Controller
         ]);
         $report->update($request->only(["status_id"]));
         return redirect()->back();
+    }
+    public function download($id)
+    {
+        $report = Report::findOrFail($id);
+        $path = $report->path_img;
+
+        if (Storage::disk('public')->exists($path)) {
+            // Получаем абсолютный путь к файлу через фасад Storage
+            $fullPath = Storage::disk('public')->path($path);
+
+            // Передаем имя файла вторым аргументом, чтобы браузер знал, как его называть
+            return response()->download($fullPath, 'report_image.webp');
+        }
+
+        abort(404, 'Файл не найден на сервере. Путь в БД: ' . $path);
     }
 }

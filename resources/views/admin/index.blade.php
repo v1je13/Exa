@@ -30,7 +30,9 @@
                         <th class="px-4 text-left">ФИО</th>
                         <th class="px-4 text-left">Текст заявления</th>
                         <th class="px-4 text-left">Номер автомобиля</th>
+                        <th class="px-4 text-left"> Фотография</th>
                         <th class="px-4 text-left">Статус</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -42,6 +44,7 @@
                         </td>
                         <td class="px-4 py-2">{{ $report->description }}</td>
                         <td class="px-4 py-2">{{ $report->number }}</td>
+                        <td class="px-4 py-2" ><a href="{{ route('reports.download', $report->id) }}">Скачать файл</a></td>
                         <td class="px-4 py-2">
                             <form class="status-form" action="{{route('reports.status.update', $report->id )}}" method="POST">
                                 @method('patch')
